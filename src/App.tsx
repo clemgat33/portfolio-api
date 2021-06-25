@@ -1,5 +1,4 @@
 import React from 'react';
-const request = require('request');
 
 function App() {
 
