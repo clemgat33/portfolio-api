@@ -1,74 +1,72 @@
 import React from 'react';
 
-function App() {
+import { useDates } from './hooks/useDates';
+import { useSearchTickers } from './hooks/useSearchTickers';
+import { useGetDataFromApi } from './hooks/useGetDataFromApi';
+import { useGetDataChart } from './hooks/useGetDataChart';
+import { useSlider } from './hooks/useSlider';
 
-	type PropsApiRequest = {
-		symbol: string;
-		startYear: number;
-	  startMonth: number;
-	  startDay: number;
-		endYear: number;
-	  endMonth: number;
-		endDay: number;
-		frequency: '1d' | '1wk' | '1mo';
-	};
+import Selector from './components/Selector';
+import Chart from './components/Chart';
+import Slider from './components/Slider';
 
-	const urlApiRequest = ({
-		symbol,
-		startYear,
-		startMonth,
-		startDay,
-		endYear,
-		endMonth,
-		endDay,
-		frequency
-	}: PropsApiRequest) => {
-		const startDate = Math.floor(Date.UTC(startYear, startMonth, startDay, 0, 0, 0) / 1000);
-    const endDate = Math.floor(Date.UTC(endYear, endMonth, endDay, 0, 0, 0) / 1000);
-		const baseUrl = 'https://finance.yahoo.com/quote/'
-		const url = `${baseUrl + symbol}/history?period1=${startDate}&period2=${endDate}&interval=${frequency}&filter=history&frequency=${frequency}`
+import './App.css';
 
-		return url
-	};
-//https://cors-anywhere.herokuapp.com/
-	async function getHistoricalPrice(url: string) {
-		console.log(url)
-		const result = await fetch(`${url}`)
-		.then((res) => res.text())
-		.then((body) => {
-			console.log(body)
-			const prices = JSON.parse(body.split('HistoricalPriceStore":{"prices":')[1].split(',"isPending')[0]);
-			console.log(prices);
-		})
-	  .catch((error) => {
-	    console.error('Error: ', error);
-	  })
+function App(): JSX.Element {
 
-		return result
-	}
+	const { dateInputs, handleChangeDate, isErrorDatesPicker } = useDates();
+	const { tickers, suggestions, searchInput, handleChangeSearch, toggleTicker } = useSearchTickers();
+	const { handleSubmit, dataAPI, isError } = useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker });
+	const { handleClear, sliderValue, handleSliderChange } = useSlider();
+	const { dataChart, arrayDates } = useGetDataChart({ dataAPI, sliderValue });
 
-
-	async function getData(): Promise<void>{
-		const url = urlApiRequest({
-			symbol: 'AAPL',
-			startYear: 2020,
-			startMonth: 6,
-			startDay: 0,
-			endYear: 2020,
-			endMonth: 8,
-			endDay: 0,
-			frequency: '1d',
-		})
-		// const results = await getHistoricalPrice(url)
-		// console.log('results', results)
-		getHistoricalPrice(url)
-	}
 
 	return (
-		<div>
-				<div>Hello</div>
-				<button onClick={getData}>Test url</button>
-		</div>
+		<main>
+			<div className='container'>
+				<Selector
+					dateInputs={dateInputs}
+					handleChangeDate={handleChangeDate}
+					isErrorDatesPicker={isErrorDatesPicker}
+					tickers={tickers}
+					toggleTicker={toggleTicker}
+					searchInput={searchInput}
+					handleChangeSearch={handleChangeSearch}
+					suggestions={suggestions}
+					handleClick={() => {handleSubmit();handleClear();}}
+				/>
+
+				<div className='wrapper--center'>
+					<h1>Charts</h1>
+					{
+						<>
+							<div className='chart'>
+								<Chart
+									data={dataChart}
+									type='bar'
+									title='Bar Chart Progression'
+								/>
+							</div>
+							<Slider
+								nbrValues={dataAPI.length > 0 ? dataAPI[0]?.dates?.length - 1 : 0}
+								sliderValue={sliderValue}
+								handleSliderChange={handleSliderChange}
+								arrayDates={arrayDates}
+							/>
+						</>
+
+					}
+					{
+						isError.error && (
+							isError.messages.map((message, key) => (
+								<div key={key}>{message}</div>
+							))
+						)
+					}
+				</div>
+			</div>
+
+		</main>
 	);
 
 }
