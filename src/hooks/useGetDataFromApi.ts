@@ -105,7 +105,7 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 						stock = { ticker: ticker, dates: datesReverse };
 					} else {
 						//if dates arent ok, error handling
-						updateMessageError.push('The first data found of ' + ticker + ' began the ' + datesReverse[0].date);
+						updateMessageError.push('The first data found of ' + ticker + ' is the ' + datesReverse[0].date);
 					}
 				}
 
