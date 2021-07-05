@@ -48,6 +48,7 @@ export default function useSlider({dataAPI}: PropsHook): TUse {
 		const value = parseInt(e.target.value);
 		setStyleOutput({left: value/nbrValues * 100});
 		setSliderValue(value);
+		setPlaying(false);
 	}
 
 	function handleReset(): void{
