@@ -12,7 +12,7 @@ type SizeCard = {
 
 
 
-export function useResponsive(): TUse {
+export default function useResponsive(): TUse {
 
 	const [sizeCard, setSizeCard] = useState<SizeCard>({
 		widthCard: 500,

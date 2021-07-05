@@ -25,7 +25,7 @@ type TDataChart = {
   y: number
 }
 
-export function useGetDataChart({ dataAPI, sliderValue }: PropsHook): TUse {
+export default function useGetDataChart({ dataAPI, sliderValue }: PropsHook): TUse {
 
 	const [dataChart, setDataChart] = useState<TDataChart[]>([]);
 	const [arrayDates, setArrayDates] = useState<string[]>([]);

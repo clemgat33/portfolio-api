@@ -9,6 +9,7 @@ type TUse = {
     error: boolean;
     messages: string[];
   }
+  timeframe: 'daily' | 'weekly' | 'monthly';
 }
 type PropsHook = {
   tickers: string[];
@@ -36,23 +37,27 @@ type PropsFetchStockData = {
 
 
 
-export function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker }: PropsHook): TUse {
+export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker }: PropsHook): TUse {
 	const baseUrl = `https://www.alphavantage.co/query?apikey=${process.env.REACT_APP_API_KEY}`;
 
 	const diffTime = Math.abs(new Date(dateInputs.endDate).getTime() - new Date(dateInputs.startDate).getTime());
 	const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 	let functionName: 'TIME_SERIES_DAILY' | 'TIME_SERIES_WEEKLY' | 'TIME_SERIES_MONTHLY';
 	let keyData: 'Time Series (Daily)' | 'Weekly Time Series' | 'Monthly Time Series';
+	let timeframe: 'daily' | 'weekly' | 'monthly';
 
 	if (diffDays <= 100) {
 		functionName = 'TIME_SERIES_DAILY';
 		keyData = 'Time Series (Daily)';
+		timeframe = 'daily';
 	} else if (diffDays <= 700) {
 		functionName = 'TIME_SERIES_WEEKLY';
 		keyData = 'Weekly Time Series';
+		timeframe = 'weekly';
 	} else {
 		functionName = 'TIME_SERIES_MONTHLY';
 		keyData = 'Monthly Time Series';
+		timeframe = 'monthly';
 	}
 
 
@@ -117,11 +122,13 @@ export function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker }: P
 				});
 				setDataAPI(filteredStocks);
 			});
+		} else{
+			setDataAPI([]);
 		}
 	}
 
 
 	// console.log('isError', isError)
 
-	return { handleSubmit, dataAPI, isError };
+	return { handleSubmit, dataAPI, isError, timeframe };
 }

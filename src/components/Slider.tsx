@@ -1,36 +1,31 @@
-import React, {useState} from 'react';
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay, faPause, faUndo } from '@fortawesome/free-solid-svg-icons';
 
-import { useResponsive } from '../hooks/useResponsive';
+import useResponsive from '../hooks/useResponsive';
 
 type PropsSlider = {
   nbrValues: number;
   sliderValue: number;
   handleSliderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   arrayDates: string[];
+  timeframe: 'daily' | 'weekly' | 'monthly';
+  styleOutput: { left: number };
+  handleReset: () => void;
+  handlePlaying: () => void;
+  isPlaying: boolean;
 }
 
-export default function Slider({ nbrValues, sliderValue, handleSliderChange, arrayDates }: PropsSlider): JSX.Element {
-
-	console.log('nbrValues', nbrValues);
+export default function Slider({ nbrValues, sliderValue, handleSliderChange, arrayDates, timeframe, styleOutput, handleReset, handlePlaying, isPlaying }: PropsSlider): JSX.Element {
 
 	const { widthSlider } = useResponsive();
-
-
-	const [styleOutput, setStyleOutput] = useState<{left: number}>({left: 0});
-	function handleChange(e: React.ChangeEvent<HTMLInputElement>): void{
-
-		const value = parseInt(e.target.value);
-		console.log(value/nbrValues * 100);
-		setStyleOutput({left: value/nbrValues * 100});
-		handleSliderChange(e);
-	}
 
 
 	return (
 		<div className="range-slider--container">
 			<span
 				className='range-slider--progress'
-				style={{ left: `calc(${styleOutput.left}% + (${10 - styleOutput.left * 0.2}px))`, display: nbrValues > 0 ? 'block' : 'none'  }}
+				style={{ left: `calc(${styleOutput.left}% + (${10 - styleOutput.left * 0.2}px))`, display: nbrValues > 0 ? 'block' : 'none' }}
 			>{arrayDates[sliderValue]}</span>
 			<input
 				style={{ width: widthSlider }}
@@ -40,13 +35,24 @@ export default function Slider({ nbrValues, sliderValue, handleSliderChange, arr
 				max={nbrValues}
 				step={1}
 				value={sliderValue}
-				onChange={handleChange}
+				onChange={handleSliderChange}
 			/>
 			<div
-				style={{display: nbrValues > 0 ? 'flex' : 'none'  }}
+				style={{ display: nbrValues > 0 ? 'flex' : 'none' }}
 				className='range-slider--startend'
 			>
 				<div>{arrayDates[0]}</div>
+				<FontAwesomeIcon
+					icon={faUndo}
+					className='icon icon-click icon-active'
+					onClick={handleReset}
+				/>
+				<div className='range-slider--timeframe'>{timeframe}</div>
+				<FontAwesomeIcon
+					icon={isPlaying ? faPause : faPlay}
+					className={`icon icon-click ${isPlaying ? 'icon-active' : ''}`}
+					onClick={handlePlaying}
+				/>
 				<div>{arrayDates[arrayDates.length - 1]}</div>
 			</div>
 		</div>

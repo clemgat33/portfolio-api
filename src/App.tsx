@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { useDates } from './hooks/useDates';
-import { useSearchTickers } from './hooks/useSearchTickers';
-import { useGetDataFromApi } from './hooks/useGetDataFromApi';
-import { useGetDataChart } from './hooks/useGetDataChart';
-import { useSlider } from './hooks/useSlider';
+import useDates from './hooks/useDates';
+import useSearchTickers from './hooks/useSearchTickers';
+import useGetDataFromApi from './hooks/useGetDataFromApi';
+import useGetDataChart from './hooks/useGetDataChart';
+import useSlider from './hooks/useSlider';
 
 import Selector from './components/Selector';
 import Chart from './components/Chart';
@@ -16,8 +16,8 @@ function App(): JSX.Element {
 
 	const { dateInputs, handleChangeDate, isErrorDatesPicker } = useDates();
 	const { tickers, suggestions, searchInput, handleChangeSearch, toggleTicker } = useSearchTickers();
-	const { handleSubmit, dataAPI, isError } = useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker });
-	const { handleClear, sliderValue, handleSliderChange } = useSlider();
+	const { handleSubmit, dataAPI, isError, timeframe } = useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker });
+	const { handleClear, sliderValue, handleSliderChange, styleOutput, nbrValues, handleReset, handlePlaying, isPlaying } = useSlider({ dataAPI });
 	const { dataChart, arrayDates } = useGetDataChart({ dataAPI, sliderValue });
 
 
@@ -48,10 +48,15 @@ function App(): JSX.Element {
 								/>
 							</div>
 							<Slider
-								nbrValues={dataAPI.length > 0 ? dataAPI[0]?.dates?.length - 1 : 0}
+								nbrValues={nbrValues}
 								sliderValue={sliderValue}
 								handleSliderChange={handleSliderChange}
 								arrayDates={arrayDates}
+								timeframe={timeframe}
+								styleOutput={styleOutput}
+								handleReset={handleReset}
+								handlePlaying={handlePlaying}
+								isPlaying={isPlaying}
 							/>
 						</>
 

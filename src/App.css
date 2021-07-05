@@ -131,7 +131,22 @@ button:focus{
 }
 
 
+/* ICON */
+.icon{
 
+}
+.icon-click{
+  color: #BEBEBE;
+  transition: .4s ease-out;
+}
+.icon-click:hover, .icon-active{
+  color: black;
+  cursor: pointer;
+  transition: .4s ease-out;
+}
+/* ICON */
+
+/* CONTAINER */
 .container{
   display: flex;
   width: 100%;
@@ -152,6 +167,10 @@ button:focus{
   flex-direction: column;
   align-items: center;
 }
+/* CONTAINER */
+
+
+
 
 /* STOCK */
 .stock--lists{
@@ -257,5 +276,8 @@ button:focus{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+.range-slider--timeframe{
+  text-transform: uppercase;
 }
 /* SLIDER */

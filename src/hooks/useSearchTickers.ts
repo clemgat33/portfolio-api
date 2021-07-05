@@ -16,7 +16,7 @@ type Stock = {
   exchange: string;
 }
 
-export function useSearchTickers(): TUse {
+export default function useSearchTickers(): TUse {
 	const nbrMaxTickers = 5;
 	const [tickers, setTickers] = useState<string[]>([]);
 	const [suggestions, setSuggestions] = useState<Stock[]>([]);

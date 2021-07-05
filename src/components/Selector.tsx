@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useDates } from '../hooks/useDates';
-import { useSearchTickers } from '../hooks/useSearchTickers';
+import useDates from '../hooks/useDates';
+import useSearchTickers from '../hooks/useSearchTickers';
 
 type PropsSelector = {
   dateInputs: {

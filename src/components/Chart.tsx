@@ -2,7 +2,7 @@ import React  from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-import { useResponsive } from '../hooks/useResponsive';
+import useResponsive from '../hooks/useResponsive';
 
 type PropsChart = {
   data: { name: string; y: number;}[];

@@ -1,21 +1,75 @@
 import React, { useState } from 'react';
 
+import useInterval from './useInterval';
+
 type TUse = {
 	sliderValue: number;
 	handleSliderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	handleClear: () => void;
+	styleOutput: {left: number};
+	nbrValues: number;
+	handleReset: () => void;
+	handlePlaying: () => void;
+	isPlaying: boolean;
 }
-export function useSlider(): TUse {
+type PropsHook = {
+  dataAPI: TStock[];
+};
+type TStock = {
+  ticker: string;
+  dates: DatesData[]
+}
+type DatesData = {
+  'date': string;
+  'open': string;
+  'close': string;
+  'volume': string;
+}
+
+export default function useSlider({dataAPI}: PropsHook): TUse {
+
+	const nbrValues = dataAPI.length > 0 ? dataAPI[0]?.dates?.length - 1 : 0;
 
 	const [sliderValue, setSliderValue] = useState<number>(0);
+	const [styleOutput, setStyleOutput] = useState<{left: number}>({left: 0});
 
-	function handleSliderChange(e: React.ChangeEvent<HTMLInputElement>): void {
-		setSliderValue(parseInt(e.target.value));
-	}
+	const [isPlaying, setPlaying] = useState<boolean>(false);
+	const delay = 500;
 
+	//refresh
 	function handleClear() {
 		setSliderValue(0);
+		setStyleOutput({left: 0});
+		setPlaying(false);
 	}
 
-	return { sliderValue, handleSliderChange, handleClear };
+	//onchange input range
+	function handleSliderChange(e: React.ChangeEvent<HTMLInputElement>): void{
+		const value = parseInt(e.target.value);
+		setStyleOutput({left: value/nbrValues * 100});
+		setSliderValue(value);
+	}
+
+	function handleReset(): void{
+		setSliderValue(0);
+		setStyleOutput({left: 0});
+		setPlaying(false);
+	}
+
+
+	useInterval(
+		() => {
+			const value = sliderValue + 1;
+			setStyleOutput({left: value/nbrValues * 100});
+			setSliderValue(value);
+		},
+		// Delay in milliseconds or null to stop it/ stop if max nbrValues
+		(isPlaying && nbrValues > sliderValue) ? delay : null,
+	);
+	
+	function handlePlaying(): void{
+		setPlaying(!isPlaying);
+	}
+
+	return { sliderValue, handleSliderChange, handleClear, styleOutput, nbrValues, handleReset, handlePlaying, isPlaying };
 }

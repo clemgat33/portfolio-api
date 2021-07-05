@@ -15,7 +15,7 @@ type Date = {
 };
 
 
-export function useDates(): TUse {
+export default function useDates(): TUse {
 
 	const dateMax = formatDate(new Date());
 	const dateMin = '2000-01-01';
