@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 function Header(props: any): JSX.Element {
-	console.log(props);
 
 	const [visible, setVisible] = useState(false);
 	function toggleMobileMenu(){
