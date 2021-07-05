@@ -12,15 +12,7 @@ type PropsChart = {
 
 export default function Chart({ data, type, title }: PropsChart): JSX.Element {
 
-
-	const subtitle = getSubtitle();
-	function getSubtitle() {
-		let sub = '';
-		data.map(e => { sub = sub + e.name + ' '; });
-		return sub;
-	}
-
-
+	const subtitle = type.slice(0,1).toUpperCase() + type.slice(1, type.length) + ' Chart';
 
 	const { sizeCard } = useResponsive();
 

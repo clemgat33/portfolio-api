@@ -44,7 +44,7 @@ function App(): JSX.Element {
 								<Chart
 									data={dataChartBar}
 									type='bar'
-									title='Bar Chart Progression'
+									title={`Progression of an investment made the ${arrayDates[0]}`}
 								/>
 							</div>
 							<Slider
