@@ -18,7 +18,7 @@ function App(): JSX.Element {
 	const { tickers, suggestions, searchInput, handleChangeSearch, toggleTicker } = useSearchTickers();
 	const { handleSubmit, dataAPI, isError, timeframe } = useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker });
 	const { handleClear, sliderValue, handleSliderChange, styleOutput, nbrValues, handleReset, handlePlaying, isPlaying } = useSlider({ dataAPI });
-	const { dataChartBar, arrayDates } = useGetDataChart({ dataAPI, sliderValue });
+	const { dataChartBar, arrayDates } = useGetDataChart({ dataAPI, sliderValue, type: 'bar' });
 
 
 	return (

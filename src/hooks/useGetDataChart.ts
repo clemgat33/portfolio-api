@@ -7,6 +7,7 @@ type TUse = {
 type PropsHook = {
   dataAPI: TStock[];
   sliderValue: number;
+  type: string;
 };
 type TStock = {
   ticker: string;
@@ -25,41 +26,43 @@ type TDataChart = {
   y: number
 }
 
-export default function useGetDataChart({ dataAPI, sliderValue }: PropsHook): TUse {
+export default function useGetDataChart({ dataAPI, sliderValue, type }: PropsHook): TUse {
 
 	const [dataChartBar, setDataChartBar] = useState<TDataChart[]>([]);
 	const [arrayDates, setArrayDates] = useState<string[]>([]);
 
 	useEffect(() => {
-		let isNotDates = false;
-		let updateDataChartBar: TDataChart[] = [];
-		const updateDates: string[] = [];
-		if (dataAPI.length > 0) {
-			const res: TDataChart[] = dataAPI.map(stock => {
-				let name = '';
-				let dates: DatesData[];
-				let firstDate: DatesData;
-				let y = 0;
-				if (stock?.dates !== undefined) {
-					name = stock.ticker;
-					dates = stock.dates;
-					firstDate = dates[0];
-					const selectedDate = dates[sliderValue];
-					y = Number((selectedDate ?.close / firstDate ?.close * 100).toFixed(2));
-					dates.map(e => updateDates.push(e.date));
-				} else {
-					isNotDates = true;
+		if(type === 'bar'){
+			let isNotDates = false;
+			let updateDataChartBar: TDataChart[] = [];
+			const updateDates: string[] = [];
+			if (dataAPI.length > 0) {
+				const res: TDataChart[] = dataAPI.map(stock => {
+					let name = '';
+					let dates: DatesData[];
+					let firstDate: DatesData;
+					let y = 0;
+					if (stock?.dates !== undefined) {
+						name = stock.ticker;
+						dates = stock.dates;
+						firstDate = dates[0];
+						const selectedDate = dates[sliderValue];
+						y = Number((selectedDate ?.close / firstDate ?.close * 100).toFixed(2));
+						dates.map(e => updateDates.push(e.date));
+					} else {
+						isNotDates = true;
+					}
+					return ({ name, y });
+				});
+				if (isNotDates === false) {
+					updateDataChartBar = res;
+					updateDataChartBar.sort(compareStocks);
 				}
-				return ({ name, y });
-			});
-			if (isNotDates === false) {
-				updateDataChartBar = res;
-				updateDataChartBar.sort(compareStocks);
 			}
+			setDataChartBar(updateDataChartBar);
+			setArrayDates(updateDates);
 		}
-		setDataChartBar(updateDataChartBar);
-		setArrayDates(updateDates);
-	}, [dataAPI, sliderValue]);
+	}, [dataAPI, sliderValue, type]);
 
 
 	function compareStocks(a: TDataChart, b: TDataChart){

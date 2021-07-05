@@ -248,6 +248,8 @@ button:focus{
   margin: 20px 0;
 }
 .range-slider--container span{
+  display: block;
+  opacity: 0;
   width: 75px;
   height: 24px;
   line-height: 24px;
@@ -255,12 +257,16 @@ button:focus{
   background: #3679dd;
   color: #fff;
   font-size: 12px;
-  display: block;
   position: absolute;
   top: -18px;
   left: calc(10px + 0%);
   transform: translate(-50%, 0);
   border-radius: 6px;
+  transition: .25s ease-out;
+}
+.range-slider--container:hover span{
+  opacity: 1;
+  transition: .25s ease-out;
 }
 .range-slider--container span:before{
   content: "";

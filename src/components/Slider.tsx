@@ -25,7 +25,7 @@ export default function Slider({ nbrValues, sliderValue, handleSliderChange, arr
 		<div className="range-slider--container">
 			<span
 				className='range-slider--progress'
-				style={{ left: `calc(${styleOutput.left}% + (${10 - styleOutput.left * 0.2}px))`, display: nbrValues > 0 ? 'block' : 'none' }}
+				style={{ left: `calc(${styleOutput.left}% + (${10 - styleOutput.left * 0.2}px))` }}
 			>{arrayDates[sliderValue]}</span>
 			<input
 				style={{ width: widthSlider }}
@@ -38,7 +38,6 @@ export default function Slider({ nbrValues, sliderValue, handleSliderChange, arr
 				onChange={handleSliderChange}
 			/>
 			<div
-				style={{ display: nbrValues > 0 ? 'flex' : 'none' }}
 				className='range-slider--bottom'
 			>
 				<div>{arrayDates[0]}</div>
