@@ -1,3 +1,14 @@
+:root {
+  --first-color: #000000;
+  --second-color: #BEBEBE;
+  --third-color: #D0D0D0;
+  --fourth-color: #EEEEEE;
+  --bg-color: #ffffff;
+  --red-color: #b30000;
+  --fast-transition: .25s ease-out;
+  --slow-transition: .4s ease-out;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -16,17 +27,27 @@ main{
   padding: 40px;
 }
 
+
 @media screen and (max-width: 600px) {
   main{
     padding: 20px;
   }
 }
 
+a{
+  color: inherit;
+  text-decoration: none;
+}
 
 p, h1, h2, h3, h4, h5{
   margin: 0;
 }
 
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
 .field{
   display: flex;
@@ -38,13 +59,13 @@ label{
   display: block;
   cursor: text;
   text-transform: uppercase;
-  font-weight: 400;
+  font-weight: 500;
   font-size: .8rem;
   line-height: 1.25rem;
   letter-spacing: .03em;
   padding-top: 1px;
   padding-bottom: 4px;
-  color: #888888;
+  opacity: .4;
 }
 
 input, textarea  {
@@ -56,15 +77,15 @@ input, textarea  {
   height: 45px;
   font-size: 1rem;
   font-weight: 500;
-  color: black;
+  color: var(--first-color);
   padding: 8px 0 6px 0;
-  border: 1px solid #BEBEBE;
+  border: 1px solid var(--second-color);
   border-width: 0 0 1px 0;
 }
 input::placeholder, textarea::placeholder {
   font-size: 1rem;
   font-weight: 400;
-  color: #BEBEBE;
+  color: var(--second-color);
 }
 textarea{
   resize: none;
@@ -73,7 +94,7 @@ textarea{
 }
 
 input.error, input.error::placeholder, textarea.error  {
-  color: #b30000;
+  color: var(--red-color);
 }
 
 input:-webkit-autofill,
@@ -85,8 +106,8 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
-  -webkit-text-fill-color: black;
+  -webkit-box-shadow: 0 0 0 30px var(--bg-color) inset !important;
+  -webkit-text-fill-color: var(--first-color);
 }
 
 .input--bottom-line{
@@ -94,16 +115,16 @@ select:-webkit-autofill:focus {
   height: 1px;
   width: 0;
   position: absolute;
-  background: black;
+  background: var(--first-color);
   bottom: 0;
   left: 0;
-  transition: .25s;
+  transition: var(--fast-transition);
 }
 input:focus+.input--bottom-line{
   width: 100%;
 }
 input.error+.input--bottom-line {
-  background: #b30000;
+  background: var(--red-color);
 }
 
 
@@ -113,22 +134,65 @@ button {
   height: 36px;
   border-radius: 5px;
   padding: 5px 24px;
-  background: #EEEEEE;
+  background: var(--fourth-color);
   border: none;
   color: inherit;
   font-weight: 600;
   font-size: .8rem;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: .4s ease-out;
+  transition: var(--slow-transition);
 }
 button:hover{
   cursor: pointer;
-  background: #D0D0D0;
+  background: var(--third-color);
 }
 button:focus{
   outline: none;
 }
+
+/* HEADER */
+.navbar{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-color);
+  border: 1px solid var(--first-color);
+  z-index: 1000;
+}
+.menu-container{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 40px;
+}
+.large-menu-area{
+  display: flex;
+  align-items: center;
+}
+.large-menu-list{
+  display: flex;
+}
+.large-menu-list li{
+  white-space: nowrap;
+  font-weight: 700;
+  opacity: .5;
+  transition: var(--fast-transition);
+}
+.large-menu-list li:hover{
+  opacity: 1
+}
+.btn-menubar{
+
+}
+.mobile-menu-list{
+
+}
+/* HEADER */
 
 
 /* ICON */
@@ -136,13 +200,13 @@ button:focus{
 
 }
 .icon-click{
-  color: #BEBEBE;
-  transition: .4s ease-out;
+  color: var(--second-color);
+  transition: var(--slow-transition);
 }
 .icon-click:hover, .icon-active{
-  color: black;
+  color: var(--first-color);
   cursor: pointer;
-  transition: .4s ease-out;
+  transition: var(--slow-transition);
 }
 /* ICON */
 
@@ -158,7 +222,7 @@ button:focus{
   padding-right: 30px;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #D0D0D0;
+  border-right: 1px solid var(--third-color);
 }
 
 .wrapper--center{
@@ -183,27 +247,27 @@ button:focus{
   position: absolute;
   width: 100%;
   top: 10px;
-  background-color: white;
-  box-shadow: 0 0 10px 2px #D0D0D0;
+  background-color: var(--bg-color);
+  box-shadow: 0 0 10px 2px var(--fourth-color);
   z-index: 2;
 }
 .stock--element{
   display: flex;
   flex-direction: column;
   padding: 5px;
-  transition: .4s ease-out;
+  transition: var(--slow-transition);
 }
 .stock--element:hover{
   cursor: pointer;
-  background-color: #EEEEEE;
+  background-color: var(--fourth-color);
 }
 .stock--element.active{
   margin: 4px 0;
   border-radius: 5px;
-  border: 1px solid #D0D0D0;
+  border: 1px solid var(--third-color);
 }
 .stock--element.active:hover{
-  background-color: #EEEEEE;
+  background-color: var(--fourth-color);
 }
 
 .stock--ticker{
@@ -213,7 +277,7 @@ button:focus{
 .stock--name{
   font-size: .8rem;
   font-weight: 400;
-  color: #BEBEBE;
+  color: var(--second-color);
 }
 /* STOCK */
 
@@ -255,18 +319,18 @@ button:focus{
   line-height: 24px;
   text-align: center;
   background: #3679dd;
-  color: #fff;
+  color: var(--bg-color);
   font-size: 12px;
   position: absolute;
   top: -18px;
   left: calc(10px + 0%);
   transform: translate(-50%, 0);
   border-radius: 6px;
-  transition: .25s ease-out;
+  transition: var(--fast-transition);
 }
 .range-slider--container:hover span{
   opacity: 1;
-  transition: .25s ease-out;
+  transition: var(--fast-transition);
 }
 .range-slider--container span:before{
   content: "";
