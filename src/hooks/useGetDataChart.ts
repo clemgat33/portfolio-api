@@ -54,19 +54,12 @@ export default function useGetDataChart({ dataAPI, sliderValue }: PropsHook): TU
 			});
 			if (isNotDates === false) {
 				updateDataChart = res;
-				updateDataChart.sort(compareStocks);
 			}
 		}
 		setDataChart(updateDataChart);
 		setArrayDates(updateDates);
 	}, [dataAPI, sliderValue]);
 
-
-	function compareStocks(a: TDataChart, b: TDataChart){
-		if (a.y > b.y) return -1;
-		if (b.y > a.y) return 1;
-		return 0;
-	}
 
 	return { dataChart, arrayDates };
 }
