@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import useInterval from './useInterval';
 
+import { TStock } from '../utils/interfaces';
+
 type TUse = {
 	sliderValue: number;
 	handleSliderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -15,16 +17,7 @@ type TUse = {
 type PropsHook = {
   dataAPI: TStock[];
 };
-type TStock = {
-  ticker: string;
-  dates: DatesData[]
-}
-type DatesData = {
-  'date': string;
-  'open': number;
-  'close': number;
-  'volume': number;
-}
+
 
 export default function useSlider({dataAPI}: PropsHook): TUse {
 

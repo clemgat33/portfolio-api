@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 
 import { formatDate } from '../utils';
 
+import { DateInputs } from '../utils/interfaces';
+
 type TUse = {
-	dateInputs: Date;
-	dateMin: string;
-	dateMax: string;
-	handleChangeDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	isErrorDatesPicker: () => boolean;
+  dateInputs: DateInputs;
+  dateMin: string;
+  dateMax: string;
+  handleChangeDate: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isErrorDatesPicker: () => boolean;
 }
-type Date = {
-  startDate: string;
-  endDate: string;
-};
+
 
 
 export default function useDates(): TUse {
@@ -20,13 +19,10 @@ export default function useDates(): TUse {
 	const dateMax = formatDate(new Date());
 	const dateMin = '1975-01-01';
 
-	const [dateInputs, setDateInputs] = useState<{
-    startDate: string;
-    endDate: string;
-  }>({
+	const [dateInputs, setDateInputs] = useState<DateInputs>({
   	startDate: '2000-01-01',
   	endDate: formatDate(new Date())
-  });
+	});
 	function handleChangeDate(e: React.ChangeEvent<HTMLInputElement>): void {
 		setDateInputs({
 			...dateInputs,

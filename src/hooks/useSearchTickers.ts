@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import STOCKS from '../utils/stocks.json';
 
+import { Stock } from '../utils/interfaces';
+
 type TUse = {
   tickers: string[];
   suggestions: Stock[];
@@ -9,11 +11,6 @@ type TUse = {
   searchInput: string;
   handleChangeSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
   toggleTicker: (ticker: string) => void;
-}
-type Stock = {
-  ticker: string;
-  name: string;
-  exchange: string;
 }
 
 export default function useSearchTickers(): TUse {
@@ -23,36 +20,36 @@ export default function useSearchTickers(): TUse {
 	const [searchInput, setSearchInput] = useState<string>('');
 
 	function handleChangeSearch(e: React.ChangeEvent<HTMLInputElement>): void {
-  	setSearchInput(e.target.value);
+		setSearchInput(e.target.value);
 	}
 
 	useEffect(() => {
-  	if (searchInput.length > 0 && tickers.length < nbrMaxTickers) {
-  		getTicker();
-  	} else {
-  		setSuggestions([]);
-  	}
-  	async function getTicker(): Promise<void> {
-  		const res: Stock[] = STOCKS.filter((stock: Stock) => {
-  			return stock.ticker.toLowerCase().startsWith(searchInput.toLowerCase()) || stock.name.toLowerCase().startsWith(searchInput.toLowerCase());
-  		});
-  		if (res.length > 0) {
-  			setSuggestions(res);
-  		}
-  	}
+		if (searchInput.length > 0 && tickers.length < nbrMaxTickers) {
+			getTicker();
+		} else {
+			setSuggestions([]);
+		}
+		async function getTicker(): Promise<void> {
+			const res: Stock[] = STOCKS.filter((stock: Stock) => {
+				return stock.ticker.toLowerCase().startsWith(searchInput.toLowerCase()) || stock.name.toLowerCase().startsWith(searchInput.toLowerCase());
+			});
+			if (res.length > 0) {
+				setSuggestions(res);
+			}
+		}
 	}, [searchInput, tickers]);
 
 
 	function toggleTicker(ticker: string): void {
-  	if (tickers.includes(ticker)) {
-  		setTickers(tickers.filter(item => item !== ticker));
-  	} else if (tickers.length < nbrMaxTickers) {
-  		setTickers([
-  			...tickers,
-  			ticker
-  		]);
-  	}
-  	setSearchInput('');
+		if (tickers.includes(ticker)) {
+			setTickers(tickers.filter(item => item !== ticker));
+		} else if (tickers.length < nbrMaxTickers) {
+			setTickers([
+				...tickers,
+				ticker
+			]);
+		}
+		setSearchInput('');
 	}
 
 	return { tickers, suggestions, nbrMaxTickers, searchInput, handleChangeSearch, toggleTicker };

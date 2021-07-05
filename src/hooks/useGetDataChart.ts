@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { TStock, DatesData, TDataChart } from '../utils/interfaces';
+
 type TUse = {
   dataChartBar: TDataChart[];
   arrayDates: string[];
@@ -9,22 +11,8 @@ type PropsHook = {
   sliderValue: number;
   type: string;
 };
-type TStock = {
-  ticker: string;
-  dates: DatesData[]
-}
-type DatesData = {
-  'date': string;
-  'open': number;
-  'close': number;
-  'volume': number;
-}
 
 
-type TDataChart = {
-  name: string;
-  y: number
-}
 
 export default function useGetDataChart({ dataAPI, sliderValue, type }: PropsHook): TUse {
 
@@ -32,7 +20,7 @@ export default function useGetDataChart({ dataAPI, sliderValue, type }: PropsHoo
 	const [arrayDates, setArrayDates] = useState<string[]>([]);
 
 	useEffect(() => {
-		if(type === 'bar'){
+		if (type === 'bar') {
 			let isNotDates = false;
 			let updateDataChartBar: TDataChart[] = [];
 			const updateDates: string[] = [];
@@ -42,7 +30,7 @@ export default function useGetDataChart({ dataAPI, sliderValue, type }: PropsHoo
 					let dates: DatesData[];
 					let firstDate: DatesData;
 					let y = 0;
-					if (stock?.dates !== undefined) {
+					if (stock ?.dates !== undefined) {
 						name = stock.ticker;
 						dates = stock.dates;
 						firstDate = dates[0];
@@ -65,7 +53,7 @@ export default function useGetDataChart({ dataAPI, sliderValue, type }: PropsHoo
 	}, [dataAPI, sliderValue, type]);
 
 
-	function compareStocks(a: TDataChart, b: TDataChart){
+	function compareStocks(a: TDataChart, b: TDataChart) {
 		if (a.y > b.y) return -1;
 		if (b.y > a.y) return 1;
 		return 0;

@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { areDatesNear } from '../utils';
 
+import { TStock, DatesData, DateInputs, PropsFetchStockData } from '../utils/interfaces';
+
 type TUse = {
   handleSubmit: () => void;
   dataAPI: TStock[];
@@ -13,27 +15,10 @@ type TUse = {
 }
 type PropsHook = {
   tickers: string[];
-  dateInputs: Date;
+  dateInputs: DateInputs;
   isErrorDatesPicker: () => boolean;
 };
-type Date = {
-  startDate: string;
-  endDate: string;
-};
-type TStock = {
-  ticker: string;
-  dates: DatesData[]
-}
-type DatesData = {
-  'date': string;
-  'open': number;
-  'close': number;
-  'volume': number;
-}
-type PropsFetchStockData = {
-  symbol: string;
-  outputsize: 'full' | 'compact';
-};
+
 
 
 
@@ -73,8 +58,8 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 		const resultSplits = await fetch(urlPolygon)
 			.then(res => res.json())
 			.then(data => data.results.map((split: any, index: number) => {
-				const {exDate, ratio} = split;
-				return {exDate, ratio};
+				const { exDate, ratio } = split;
+				return { exDate, ratio };
 			}))
 			.catch(e => console.error(e));
 
@@ -86,16 +71,16 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 				const filtered = Object.keys(obj)
 					.filter((key: string) => (key > dateInputs.startDate && key <= dateInputs.endDate))
 					.reduce((res: any, key, index) => (res[index] = { date: key, open: parseInt(obj[key]['1. open']), close: parseInt(obj[key]['4. close']), volume: parseInt(obj[key]['5. volume']) }, res), []);
-      	return filtered;
+				return filtered;
 			})
 			.then(adjusted => {
 				//check if splits and divide prices comparing to the splits
 				adjusted.map((val: DatesData) => {
-					resultSplits.map((split: {exDate: string, ratio: number}) => {
+					resultSplits.map((split: { exDate: string, ratio: number }) => {
 						//for monthly and weekly the split is inside it, so the open will be different but not the close
-						if(timeframe !== 'daily' && areDatesNear(timeframe, val.date, split.exDate, true)){
+						if (timeframe !== 'daily' && areDatesNear(timeframe, val.date, split.exDate, true)) {
 							val.open = val.open * split.ratio;
-						} else if(val.date < split.exDate){
+						} else if (val.date < split.exDate) {
 							val.open = val.open * split.ratio;
 							val.close = val.close * split.ratio;
 						}
@@ -150,7 +135,7 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 				});
 				setDataAPI(filteredStocks);
 			});
-		} else{
+		} else {
 			setDataAPI([]);
 		}
 	}
