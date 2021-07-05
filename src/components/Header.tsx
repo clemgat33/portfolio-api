@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Helmet} from 'react-helmet';
 import { Link, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -11,9 +12,15 @@ function Header(props: any): JSX.Element {
 	}
 	const classMobileMenu = visible ? 'mobile-menu show' :  'mobile-menu hide';
 
+	const title = props.location.pathname.substring(1) === ''
+		? 'Home'
+		: props.location.pathname.substring(1).slice(0,1).toUpperCase() + props.location.pathname.substring(1).slice(1);
 
 	const listMenu = (
 		<>
+			<Helmet>
+				<title>{title} | API STOCK</title>
+			</Helmet>
 			<li className={props.location.pathname.includes('/') ? 'active' : ''}>
 				<Link to='/'>Home</Link>
 			</li>
