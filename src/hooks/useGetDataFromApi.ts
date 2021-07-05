@@ -38,7 +38,8 @@ type PropsFetchStockData = {
 
 
 export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker }: PropsHook): TUse {
-	const baseUrl = `https://www.alphavantage.co/query?apikey=${process.env.REACT_APP_API_KEY}`;
+	const baseUrlAlpha = `https://www.alphavantage.co/query?apikey=${process.env.REACT_APP_API_KEY_ALPHAVANTAGE}`;
+	const baseUrlPolygon = (symbol: string) => `https://api.polygon.io/v2/reference/splits/${symbol}?&apiKey=${process.env.REACT_APP_API_KEY_POLYGON}`;
 
 	const diffTime = Math.abs(new Date(dateInputs.endDate).getTime() - new Date(dateInputs.startDate).getTime());
 	const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -46,11 +47,11 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 	let keyData: 'Time Series (Daily)' | 'Weekly Time Series' | 'Monthly Time Series';
 	let timeframe: 'daily' | 'weekly' | 'monthly';
 
-	if (diffDays <= 100) {
+	if (diffDays <= 200) {
 		functionName = 'TIME_SERIES_DAILY';
 		keyData = 'Time Series (Daily)';
 		timeframe = 'daily';
-	} else if (diffDays <= 700) {
+	} else if (diffDays <= 1400) {
 		functionName = 'TIME_SERIES_WEEKLY';
 		keyData = 'Weekly Time Series';
 		timeframe = 'weekly';
@@ -67,11 +68,14 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 
 
 	async function fetchStockData({ symbol, outputsize }: PropsFetchStockData): Promise<DatesData[]> {
-		const url = `${baseUrl}&function=${functionName}&symbol=${symbol}&outputsize=${outputsize}`;
-		const result = await fetch(url)
+		const urlAlpha = `${baseUrlAlpha}&function=${functionName}&symbol=${symbol}&outputsize=${outputsize}`;
+		const urlPolygon = baseUrlPolygon(symbol);
+		const result = await fetch(urlAlpha)
 			.then(res => res.json())
 			.then(data => data[keyData])
 			.then(obj => {
+				console.log(obj);
+				console.log(urlPolygon);
 				const filtered = Object.keys(obj)
 					.filter((key: string) => (key > dateInputs.startDate && key <= dateInputs.endDate))
 					.reduce((res: any, key, index) => (res[index] = { date: key, open: obj[key]['1. open'], close: obj[key]['4. close'], volume: obj[key]['5. volume'] }, res), []);
