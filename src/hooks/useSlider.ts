@@ -21,9 +21,9 @@ type TStock = {
 }
 type DatesData = {
   'date': string;
-  'open': string;
-  'close': string;
-  'volume': string;
+  'open': number;
+  'close': number;
+  'volume': number;
 }
 
 export default function useSlider({dataAPI}: PropsHook): TUse {

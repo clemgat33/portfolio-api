@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { isStartDateCorrect } from '../utils';
+import { areDatesNear } from '../utils';
 
 type TUse = {
   handleSubmit: () => void;
@@ -26,9 +26,9 @@ type TStock = {
 }
 type DatesData = {
   'date': string;
-  'open': string;
-  'close': string;
-  'volume': string;
+  'open': number;
+  'close': number;
+  'volume': number;
 }
 type PropsFetchStockData = {
   symbol: string;
@@ -68,20 +68,47 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 
 
 	async function fetchStockData({ symbol, outputsize }: PropsFetchStockData): Promise<DatesData[]> {
-		const urlAlpha = `${baseUrlAlpha}&function=${functionName}&symbol=${symbol}&outputsize=${outputsize}`;
+	//	const urlAlpha = `${baseUrlAlpha}&function=TIME_SERIES_MONTHLY&symbol=${symbol}&outputsize=${outputsize}`;
+		 const urlAlpha = `${baseUrlAlpha}&function=${functionName}&symbol=${symbol}&outputsize=${outputsize}`;
 		const urlPolygon = baseUrlPolygon(symbol);
+    
+		const resultSplits = await fetch(urlPolygon)
+			.then(res => res.json())
+			.then(data => data.results.map((split: any, index: number) => {
+				const {exDate, ratio} = split;
+				return {exDate, ratio};
+			}))
+			.catch(e => console.error(e));
+
 		const result = await fetch(urlAlpha)
 			.then(res => res.json())
+			//.then(data => data['Monthly Time Series'])
 			.then(data => data[keyData])
 			.then(obj => {
-				console.log(obj);
-				console.log(urlPolygon);
+				// filter comparing to the dates selected and change obj{} to a smallest one
 				const filtered = Object.keys(obj)
 					.filter((key: string) => (key > dateInputs.startDate && key <= dateInputs.endDate))
-					.reduce((res: any, key, index) => (res[index] = { date: key, open: obj[key]['1. open'], close: obj[key]['4. close'], volume: obj[key]['5. volume'] }, res), []);
-				return filtered;
+					.reduce((res: any, key, index) => (res[index] = { date: key, open: parseInt(obj[key]['1. open']), close: parseInt(obj[key]['4. close']), volume: parseInt(obj[key]['5. volume']) }, res), []);
+      	return filtered;
+			})
+			.then(adjusted => {
+				//check if splits and divide prices comparing to the splits
+				adjusted.map((val: DatesData) => {
+					resultSplits.map((split: {exDate: string, ratio: number}) => {
+						//for monthly and weekly the split is inside it, so the open will be different but not the close
+						if(timeframe !== 'daily' && areDatesNear(timeframe, val.date, split.exDate, true)){
+							val.open = val.open * split.ratio;
+						} else if(val.date < split.exDate){
+							val.open = val.open * split.ratio;
+							val.close = val.close * split.ratio;
+						}
+					});
+					return val;
+				});
+				return adjusted;
 			})
 			.catch(e => console.error(e));
+
 		return result;
 	}
 
@@ -103,13 +130,13 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 					updateMessageError.push('Problem fetching ' + ticker + ' data, try again in 1 minute.');
 				} else {
 					// inverse dates array[]
-					const datesReverse = dates.reverse();
-					//check if first date = dates[0]
-					if (isStartDateCorrect(diffDays, dateInputs.startDate, datesReverse[0].date)) {
-						stock = { ticker: ticker, dates: datesReverse };
+					dates.reverse();
+					//check if first date is around  dates[0](firt data of the list)
+					if (areDatesNear(timeframe, dateInputs.startDate, dates[0].date, false)) {
+						stock = { ticker: ticker, dates: dates };
 					} else {
 						//if dates arent ok, error handling
-						updateMessageError.push('The first data found of ' + ticker + ' is the ' + datesReverse[0].date);
+						updateMessageError.push('The first data found of ' + ticker + ' is the ' + dates[0].date);
 					}
 				}
 

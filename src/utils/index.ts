@@ -9,15 +9,17 @@ export function formatDate(date: Date): string {
 }
 
 
-export function isStartDateCorrect(diffDays: number, startDateInput: string, date: string): boolean{
+export function areDatesNear(timeframe: string, dateToCompare: string, date: string, strict: boolean): boolean{
 	let bool = false;
-	const diffDates = ((new Date(date)).getTime() - (new Date(startDateInput)).getTime()) / (1000*60*60*24); // 1 day in milliseconds
-	if (diffDays <= 100) {
-		bool =  diffDates <= 4;
-	} else if (diffDays <= 700) {
+	const diffDates = ((new Date(date)).getTime() - (new Date(dateToCompare)).getTime()) / (1000*60*60*24); // 1 day in milliseconds
+	if (timeframe === 'daily') {
+		bool =  diffDates > 0 && diffDates <= 4;
+	} else if (timeframe === 'weekly' && strict) {
+		bool =  diffDates > 0 && diffDates <= 7;
+	} else if (timeframe === 'weekly' && !strict) {
 		bool =  diffDates <= 10;
-	} else {
-		bool = startDateInput.slice(0,7) === date.slice(0,7);
+	}  else if (timeframe === 'monthly'){
+		bool = dateToCompare.slice(0,7) === date.slice(0,7);
 	}
 	return bool;
 }

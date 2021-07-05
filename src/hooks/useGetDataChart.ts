@@ -14,9 +14,9 @@ type TStock = {
 }
 type DatesData = {
   'date': string;
-  'open': string;
-  'close': string;
-  'volume': string;
+  'open': number;
+  'close': number;
+  'volume': number;
 }
 
 
@@ -45,19 +45,28 @@ export default function useGetDataChart({ dataAPI, sliderValue }: PropsHook): TU
 					dates = stock.dates;
 					firstDate = dates[0];
 					const selectedDate = dates[sliderValue];
-					y = Number((parseFloat(selectedDate ?.close) / parseFloat(firstDate ?.close) * 100).toFixed(2));
+					y = Number((selectedDate ?.close / firstDate ?.close * 100).toFixed(2));
 					dates.map(e => updateDates.push(e.date));
 				} else {
 					isNotDates = true;
 				}
 				return ({ name, y });
 			});
-			if (isNotDates === false) updateDataChart = res;
+			if (isNotDates === false) {
+				updateDataChart = res;
+				updateDataChart.sort(compareStocks);
+			}
 		}
 		setDataChart(updateDataChart);
 		setArrayDates(updateDates);
 	}, [dataAPI, sliderValue]);
 
+
+	function compareStocks(a: TDataChart, b: TDataChart){
+		if (a.y > b.y) return -1;
+		if (b.y > a.y) return 1;
+		return 0;
+	}
 
 	return { dataChart, arrayDates };
 }
