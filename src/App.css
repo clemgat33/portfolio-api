@@ -232,6 +232,10 @@ button:focus{
 .highcharts-credits{
   display: none;
 }
+
+.highcharts-yaxis{
+  margin: 10px 0;
+}
 /* CHART */
 
 

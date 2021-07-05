@@ -39,27 +39,31 @@ function App(): JSX.Element {
 				<div className='wrapper--center'>
 					<h1>Charts</h1>
 					{
-						<>
-							<div className='chart'>
-								<Chart
-									data={dataChartBar}
-									type='bar'
-									title={`Progression of an investment made the ${arrayDates[0]}`}
+						arrayDates.length > 0 ? (
+							<>
+								<div className='chart'>
+									<Chart
+										data={dataChartBar}
+										type='bar'
+										title={`Progression of an investment made the ${arrayDates[0]}`}
+										yAxisTitle={arrayDates[sliderValue]}
+									/>
+								</div>
+								<Slider
+									nbrValues={nbrValues}
+									sliderValue={sliderValue}
+									handleSliderChange={handleSliderChange}
+									arrayDates={arrayDates}
+									timeframe={timeframe}
+									styleOutput={styleOutput}
+									handleReset={handleReset}
+									handlePlaying={handlePlaying}
+									isPlaying={isPlaying}
 								/>
-							</div>
-							<Slider
-								nbrValues={nbrValues}
-								sliderValue={sliderValue}
-								handleSliderChange={handleSliderChange}
-								arrayDates={arrayDates}
-								timeframe={timeframe}
-								styleOutput={styleOutput}
-								handleReset={handleReset}
-								handlePlaying={handlePlaying}
-								isPlaying={isPlaying}
-							/>
-						</>
-
+							</>
+						) : (
+							<div style={{margin: 40}}>Choose start date, end date and select up to 5 tickers.</div>
+						)
 					}
 					{
 						isError.error && (

@@ -8,9 +8,10 @@ type PropsChart = {
   data: { name: string; y: number; }[];
   type: string;
   title: string;
+  yAxisTitle?: string;
 }
 
-export default function Chart({ data, type, title }: PropsChart): JSX.Element {
+export default function Chart({ data, type, title, yAxisTitle }: PropsChart): JSX.Element {
 
 	const subtitle = type.slice(0,1).toUpperCase() + type.slice(1, type.length) + ' Chart';
 
@@ -66,7 +67,14 @@ export default function Chart({ data, type, title }: PropsChart): JSX.Element {
 		},
 		yAxis: {
 			title: {
-				text: '',
+				text: yAxisTitle || '',
+				style: {
+					color: '#000000',
+					fontWeight: 'bold',
+					fontSize: '14px',
+					fontFamily: 'Verdana, sans-serif',
+				},
+				margin: 20
 			},
 			labels: {
 				style: {
@@ -85,7 +93,6 @@ export default function Chart({ data, type, title }: PropsChart): JSX.Element {
 			enabled: false
 		},
 		series: [{
-			name: 'Types',
 			data: data,
 			dataLabels: {
 				enabled: true,
@@ -96,7 +103,7 @@ export default function Chart({ data, type, title }: PropsChart): JSX.Element {
 					fontFamily: 'Verdana, sans-serif'
 				}
 			},
-			borderWidth: 0,
+			borderWidth: 0.5,
 		}],
 	};
 	/*=== OPTIONS ===*/
