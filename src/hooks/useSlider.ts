@@ -34,7 +34,7 @@ export default function useSlider({dataAPI}: PropsHook): TUse {
 	const [styleOutput, setStyleOutput] = useState<{left: number}>({left: 0});
 
 	const [isPlaying, setPlaying] = useState<boolean>(false);
-	const delay = 200;
+	const delay = 100;
 
 	//refresh
 	function handleClear() {
