@@ -39,20 +39,22 @@ export default function Slider({ nbrValues, sliderValue, handleSliderChange, arr
 			/>
 			<div
 				style={{ display: nbrValues > 0 ? 'flex' : 'none' }}
-				className='range-slider--startend'
+				className='range-slider--bottom'
 			>
 				<div>{arrayDates[0]}</div>
-				<FontAwesomeIcon
-					icon={faUndo}
-					className='icon icon-click icon-active'
-					onClick={handleReset}
-				/>
-				<div className='range-slider--timeframe'>{timeframe}</div>
-				<FontAwesomeIcon
-					icon={isPlaying ? faPause : faPlay}
-					className={`icon icon-click ${isPlaying ? 'icon-active' : ''}`}
-					onClick={handlePlaying}
-				/>
+				<div>
+					<FontAwesomeIcon
+						icon={faUndo}
+						className='icon icon-click icon-active'
+						onClick={handleReset}
+					/>
+					<div className='range-slider--timeframe'>{timeframe}</div>
+					<FontAwesomeIcon
+						icon={isPlaying ? faPause : faPlay}
+						className={`icon icon-click ${isPlaying ? 'icon-active' : ''}`}
+						onClick={handlePlaying}
+					/>
+				</div>
 				<div>{arrayDates[arrayDates.length - 1]}</div>
 			</div>
 		</div>

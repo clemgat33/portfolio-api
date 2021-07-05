@@ -242,7 +242,6 @@ button:focus{
   display: flex;
   flex-direction: column;
   margin: 20px 0;
-  font-size: .7rem;
 }
 .range-slider--container span{
   width: 75px;
@@ -272,13 +271,20 @@ button:focus{
   margin-left: -5px;
   margin-top: -1px;
 }
-.range-slider--startend{
+.range-slider--bottom{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  font-size: .8rem;
+}
+.range-slider--bottom > div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .range-slider--timeframe{
   text-transform: uppercase;
+  margin: 0 20px;
 }
 /* SLIDER */
 
