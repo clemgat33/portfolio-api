@@ -10,7 +10,7 @@ import Selector from './components/Selector';
 import Chart from './components/Chart';
 import Slider from './components/Slider';
 
-import './App.css';
+import './App.css'; 
 
 function App(): JSX.Element {
 
