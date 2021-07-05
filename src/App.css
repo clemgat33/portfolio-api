@@ -281,3 +281,11 @@ button:focus{
   text-transform: uppercase;
 }
 /* SLIDER */
+
+
+
+.error-message--list{
+  padding: 20px 0;
+  width: 100%;
+  text-align: center;
+}

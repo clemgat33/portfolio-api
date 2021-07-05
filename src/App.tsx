@@ -63,9 +63,11 @@ function App(): JSX.Element {
 					}
 					{
 						isError.error && (
-							isError.messages.map((message, key) => (
-								<div key={key}>{message}</div>
-							))
+							<div className='error-message--list'>
+								{isError.messages.map((message, key) => (
+									<div key={key}>{message}</div>
+								))}
+							</div>
 						)
 					}
 				</div>
