@@ -58,6 +58,20 @@ export default function Chart({ data, type, title }: PropsChart): JSX.Element {
 				}
 			}
 		},
+		plotOptions: {
+			series: {
+				pointPadding: 0,
+				zones: [{
+					value: 100,
+					color: '#b60c0c'
+				}, {
+					value: 100.001,
+					color: '#3679dd'
+				}, {
+					color: '#1ab60c'
+				}]
+			}
+		},
 		yAxis: {
 			title: {
 				text: '',
@@ -70,7 +84,7 @@ export default function Chart({ data, type, title }: PropsChart): JSX.Element {
 		},
 		tooltip: {
 			pointFormat: '<b>{point.y}</b>',
-			backgroundColor: '#EEEEEE',
+			backgroundColor: '#ffffff',
 			style: {
 				color: '#000000',
 			}
@@ -90,8 +104,7 @@ export default function Chart({ data, type, title }: PropsChart): JSX.Element {
 					fontFamily: 'Verdana, sans-serif'
 				}
 			},
-			color: '#3679dd',
-			borderWidth: 0.5,
+			borderWidth: 0,
 		}],
 	};
 	/*=== OPTIONS ===*/

@@ -18,7 +18,7 @@ function App(): JSX.Element {
 	const { tickers, suggestions, searchInput, handleChangeSearch, toggleTicker } = useSearchTickers();
 	const { handleSubmit, dataAPI, isError, timeframe } = useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker });
 	const { handleClear, sliderValue, handleSliderChange, styleOutput, nbrValues, handleReset, handlePlaying, isPlaying } = useSlider({ dataAPI });
-	const { dataChart, arrayDates } = useGetDataChart({ dataAPI, sliderValue });
+	const { dataChartBar, arrayDates } = useGetDataChart({ dataAPI, sliderValue });
 
 
 	return (
@@ -42,7 +42,7 @@ function App(): JSX.Element {
 						<>
 							<div className='chart'>
 								<Chart
-									data={dataChart}
+									data={dataChartBar}
 									type='bar'
 									title='Bar Chart Progression'
 								/>

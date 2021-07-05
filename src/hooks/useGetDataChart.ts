@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 type TUse = {
-  dataChart: TDataChart[];
+  dataChartBar: TDataChart[];
   arrayDates: string[];
 }
 type PropsHook = {
@@ -27,12 +27,12 @@ type TDataChart = {
 
 export default function useGetDataChart({ dataAPI, sliderValue }: PropsHook): TUse {
 
-	const [dataChart, setDataChart] = useState<TDataChart[]>([]);
+	const [dataChartBar, setDataChartBar] = useState<TDataChart[]>([]);
 	const [arrayDates, setArrayDates] = useState<string[]>([]);
 
 	useEffect(() => {
 		let isNotDates = false;
-		let updateDataChart: TDataChart[] = [];
+		let updateDataChartBar: TDataChart[] = [];
 		const updateDates: string[] = [];
 		if (dataAPI.length > 0) {
 			const res: TDataChart[] = dataAPI.map(stock => {
@@ -53,13 +53,20 @@ export default function useGetDataChart({ dataAPI, sliderValue }: PropsHook): TU
 				return ({ name, y });
 			});
 			if (isNotDates === false) {
-				updateDataChart = res;
+				updateDataChartBar = res;
+				updateDataChartBar.sort(compareStocks);
 			}
 		}
-		setDataChart(updateDataChart);
+		setDataChartBar(updateDataChartBar);
 		setArrayDates(updateDates);
 	}, [dataAPI, sliderValue]);
 
 
-	return { dataChart, arrayDates };
+	function compareStocks(a: TDataChart, b: TDataChart){
+		if (a.y > b.y) return -1;
+		if (b.y > a.y) return 1;
+		return 0;
+	}
+
+	return { dataChartBar, arrayDates };
 }
