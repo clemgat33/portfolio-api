@@ -62,16 +62,14 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 	}
 
 
-
 	const [dataAPI, setDataAPI] = useState<TStock[]>([]);
 	const [isError, setIsError] = useState<{ error: boolean; messages: string[] }>({ error: false, messages: [] });
 
 
 	async function fetchStockData({ symbol, outputsize }: PropsFetchStockData): Promise<DatesData[]> {
-	//	const urlAlpha = `${baseUrlAlpha}&function=TIME_SERIES_MONTHLY&symbol=${symbol}&outputsize=${outputsize}`;
-		 const urlAlpha = `${baseUrlAlpha}&function=${functionName}&symbol=${symbol}&outputsize=${outputsize}`;
+		const urlAlpha = `${baseUrlAlpha}&function=${functionName}&symbol=${symbol}&outputsize=${outputsize}`;
 		const urlPolygon = baseUrlPolygon(symbol);
-    
+
 		const resultSplits = await fetch(urlPolygon)
 			.then(res => res.json())
 			.then(data => data.results.map((split: any, index: number) => {
@@ -82,7 +80,6 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 
 		const result = await fetch(urlAlpha)
 			.then(res => res.json())
-			//.then(data => data['Monthly Time Series'])
 			.then(data => data[keyData])
 			.then(obj => {
 				// filter comparing to the dates selected and change obj{} to a smallest one
