@@ -34,7 +34,7 @@ export default function useSlider({dataAPI}: PropsHook): TUse {
 	const [styleOutput, setStyleOutput] = useState<{left: number}>({left: 0});
 
 	const [isPlaying, setPlaying] = useState<boolean>(false);
-	const delay = 500;
+	const delay = 200;
 
 	//refresh
 	function handleClear() {
@@ -66,9 +66,11 @@ export default function useSlider({dataAPI}: PropsHook): TUse {
 		// Delay in milliseconds or null to stop it/ stop if max nbrValues
 		(isPlaying && nbrValues > sliderValue) ? delay : null,
 	);
-	
+
 	function handlePlaying(): void{
-		setPlaying(!isPlaying);
+		if(nbrValues > sliderValue){
+			setPlaying(!isPlaying);
+		}
 	}
 
 	return { sliderValue, handleSliderChange, handleClear, styleOutput, nbrValues, handleReset, handlePlaying, isPlaying };
