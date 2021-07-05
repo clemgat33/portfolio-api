@@ -18,14 +18,14 @@ type Date = {
 export default function useDates(): TUse {
 
 	const dateMax = formatDate(new Date());
-	const dateMin = '2000-01-01';
+	const dateMin = '1975-01-01';
 
 	const [dateInputs, setDateInputs] = useState<{
     startDate: string;
     endDate: string;
   }>({
-  	startDate: '2018-01-01',
-  	endDate: '2020-01-01'
+  	startDate: '2000-01-01',
+  	endDate: formatDate(new Date())
   });
 	function handleChangeDate(e: React.ChangeEvent<HTMLInputElement>): void {
 		setDateInputs({
