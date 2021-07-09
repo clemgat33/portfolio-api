@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import { areDatesNear } from '../utils';
 
-import { TStock, DatesData, DateInputs, PropsFetchStockData } from '../utils/interfaces';
+import { Stock, Split, DatesData, DateInputs, PropsFetchStockData } from '../utils/interfaces';
 
 type TUse = {
   handleSubmit: () => void;
-  dataAPI: TStock[];
+  dataAPI: Stock[];
   isError: {
     error: boolean;
     messages: string[];
@@ -47,7 +47,7 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 	}
 
 
-	const [dataAPI, setDataAPI] = useState<TStock[]>([]);
+	const [dataAPI, setDataAPI] = useState<Stock[]>([]);
 	const [isError, setIsError] = useState<{ error: boolean; messages: string[] }>({ error: false, messages: [] });
 
 
@@ -57,10 +57,16 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 
 		const resultSplits = await fetch(urlPolygon)
 			.then(res => res.json())
-			.then(data => data.results.map((split: any, index: number) => {
-				const { exDate, ratio } = split;
-				return { exDate, ratio };
-			}))
+			.then(data => {
+				if(data.status === 'OK'){
+					const res = data.results.map((split: Split) => {
+						const { exDate, ratio } = split;
+						return { exDate, ratio };
+					});
+					return res;
+				}
+			}
+			)
 			.catch(e => console.error(e));
 
 		const result = await fetch(urlAlpha)
@@ -68,26 +74,30 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
 			.then(data => data[keyData])
 			.then(obj => {
 				// filter comparing to the dates selected and change obj{} to a smallest one
-				const filtered = Object.keys(obj)
-					.filter((key: string) => (key > dateInputs.startDate && key <= dateInputs.endDate))
-					.reduce((res: any, key, index) => (res[index] = { date: key, open: parseInt(obj[key]['1. open']), close: parseInt(obj[key]['4. close']), volume: parseInt(obj[key]['5. volume']) }, res), []);
-				return filtered;
+				if(obj !== undefined){
+					const filtered = Object.keys(obj)
+						.filter((key: string) => (key > dateInputs.startDate && key <= dateInputs.endDate))
+						.reduce((res: any, key, index) => (res[index] = { date: key, open: parseInt(obj[key]['1. open']), close: parseInt(obj[key]['4. close']), volume: parseInt(obj[key]['5. volume']) }, res), []);
+					return filtered;
+				}
 			})
 			.then(adjusted => {
-				//check if splits and divide prices comparing to the splits
-				adjusted.map((val: DatesData) => {
-					resultSplits.map((split: { exDate: string, ratio: number }) => {
+				//check if splits is exists and divide prices comparing to the splits
+				if(adjusted !== undefined && resultSplits !== undefined){
+					adjusted.map((val: DatesData) => {
+						resultSplits?.map((split: { exDate: string, ratio: number }) => {
 						//for monthly and weekly the split is inside it, so the open will be different but not the close
-						if (timeframe !== 'daily' && areDatesNear(timeframe, val.date, split.exDate, true)) {
-							val.open = val.open * split.ratio;
-						} else if (val.date < split.exDate) {
-							val.open = val.open * split.ratio;
-							val.close = val.close * split.ratio;
-						}
+							if (timeframe !== 'daily' && areDatesNear(timeframe, val.date, split.exDate, true)) {
+								val.open = val.open * split.ratio;
+							} else if (val.date < split.exDate) {
+								val.open = val.open * split.ratio;
+								val.close = val.close * split.ratio;
+							}
+						});
+						return val;
 					});
-					return val;
-				});
-				return adjusted;
+  				return adjusted;
+				}
 			})
 			.catch(e => console.error(e));
 
@@ -103,7 +113,7 @@ export default function useGetDataFromApi({ tickers, dateInputs, isErrorDatesPic
       tickers.length > 0
 		) {
 			const updateMessageError: string[] = [];
-			const requestData: Promise<TStock>[] = tickers.map(async (ticker: string) => {
+			const requestData: Promise<Stock>[] = tickers.map(async (ticker: string) => {
 				//const messageDates = ticker + ' data does not begin at this date.'
 				let stock: any;
 				const dates: DatesData[] = await fetchStockData({ symbol: ticker, outputsize: 'full' });

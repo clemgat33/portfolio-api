@@ -19,8 +19,8 @@ body {
   font-family: BlinkMacSystemFont, -apple-system, Segoe UI, Roboto, Oxygen,
   Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
-html, body, body>div, main{
-  height: 100%;
+html, body, body>div{
+  width: 100%;
 }
 
 main{
@@ -28,18 +28,13 @@ main{
 }
 
 
-@media screen and (max-width: 600px) {
-  main{
-    padding: 20px;
-  }
-}
 
 a{
   color: inherit;
   text-decoration: none;
 }
 
-p, h1, h2, h3, h4, h5{
+h1, h2, h3, h4, h5{
   margin: 0;
 }
 
@@ -54,6 +49,7 @@ ul{
   flex-direction : column;
   position: relative;
   margin-top: 20px;
+  width: 100%;
 }
 label{
   display: block;
@@ -75,7 +71,7 @@ input, textarea  {
   background: none;
   width: 100%;
   height: 45px;
-  font-size: 1rem;
+  font-size: .9em;
   font-weight: 500;
   color: var(--first-color);
   padding: 8px 0 6px 0;
@@ -166,7 +162,7 @@ button:focus{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: 80px;
   padding: 0 40px;
   background: var(--bg-color);
   border-bottom: 1px solid var(--third-color);
@@ -238,16 +234,7 @@ button:focus{
 .mobile-menu-list li:hover, .mobile-menu-list li.active{
   opacity: 1;
 }
-@media screen and (min-width: 769px) {
-  .mobile-menu, .btn-menubar{
-    display: none;
-  }
-}
-@media screen and (max-width: 768px) {
-  .large-menu-area{
-    display: none;
-  }
-}
+
 /* HEADER */
 
 
@@ -269,27 +256,25 @@ button:focus{
 
 
 
-/* CONTAINER */
-.container{
+/* CONTAINER-CHART */
+.container-chart{
   display: flex;
   width: 100%;
-  height: 100%;
 }
-
-.wrapper--search{
+.wrapper--selector{
   width: 230px;
   padding-right: 30px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--third-color);
 }
-
 .wrapper--center{
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 /* CONTAINER */
 
 
@@ -298,6 +283,7 @@ button:focus{
 /* STOCK */
 .stock--lists{
   position: relative;
+  width: 100%;
 }
 .stock--list-tickers{
   margin-top: 15px;
@@ -427,4 +413,64 @@ button:focus{
   padding: 20px 0;
   width: 100%;
   text-align: center;
+  font-size: .8rem;
+  color: var(--red-color);
 }
+
+
+
+.link{
+  opacity: 1;
+  font-weight: bold;
+  transition: var(--fast-transition);
+}
+.link:hover{
+  opacity: .7;
+}
+
+
+/* RESPONSIVE */
+@media screen and (min-width: 769px) {
+  .mobile-menu, .btn-menubar{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  main{
+    padding: 20px;
+  }
+  .large-menu-area{
+    display: none;
+  }
+  .menu-container{
+    height: 60px;
+  }
+
+  .container-chart{
+    flex-direction: column;
+  }
+  .wrapper--selector{
+    width: 100%;
+    border: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0;
+    margin: 20px 0;
+  }
+  .wrapper--selector .field-date{
+    width: 47%;
+  }
+  .wrapper--center{
+    margin: 20px 0;
+  }
+  .chart{
+    margin: 20px 0;
+  }
+  .range-slider--bottom{
+    font-size: .7rem;
+  }
+}
+/* RESPONSIVE */

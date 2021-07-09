@@ -2,9 +2,10 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faUndo } from '@fortawesome/free-solid-svg-icons';
 
-import useResponsive from '../hooks/useResponsive';
+
 
 type PropsSlider = {
+  widthSlider: number;
   nbrValues: number;
   sliderValue: number;
   handleSliderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -16,9 +17,9 @@ type PropsSlider = {
   isPlaying: boolean;
 }
 
-export default function Slider({ nbrValues, sliderValue, handleSliderChange, arrayDates, timeframe, styleOutput, handleReset, handlePlaying, isPlaying }: PropsSlider): JSX.Element {
+export default function Slider({ widthSlider, nbrValues, sliderValue, handleSliderChange, arrayDates, timeframe, styleOutput, handleReset, handlePlaying, isPlaying }: PropsSlider): JSX.Element {
 
-	const { widthSlider } = useResponsive();
+
 
 
 	return (

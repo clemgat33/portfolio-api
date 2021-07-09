@@ -30,9 +30,9 @@ export default function Selector({ dateInputs, handleChangeDate, isErrorDatesPic
 	const { nbrMaxTickers } = useSearchTickers();
 
 	return (
-		<div className='wrapper--search'>
-			<p>Select up to {nbrMaxTickers} tickers</p>
-			<div className='field'>
+		<>
+			<h4 style={{width: '100%'}}>Select up to {nbrMaxTickers} tickers</h4>
+			<div className='field field-date'>
 				<label>Start date</label>
 				<input
 					className={isErrorDatesPicker() ? 'error' : ''}
@@ -45,7 +45,7 @@ export default function Selector({ dateInputs, handleChangeDate, isErrorDatesPic
 				/>
 				<span className="input--bottom-line"></span>
 			</div>
-			<div className='field'>
+			<div className='field field-date'>
 				<label>End date</label>
 				<input
 					className={isErrorDatesPicker() ? 'error' : ''}
@@ -104,7 +104,7 @@ export default function Selector({ dateInputs, handleChangeDate, isErrorDatesPic
 			<div className='submit'>
 				<button onClick={handleClick}>Submit</button>
 			</div>
-		</div>
+		</>
 	);
 
 }

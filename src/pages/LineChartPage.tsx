@@ -4,24 +4,21 @@ import useDates from '../hooks/useDates';
 import useSearchTickers from '../hooks/useSearchTickers';
 import useGetDataFromApi from '../hooks/useGetDataFromApi';
 import useGetDataChart from '../hooks/useGetDataChart';
-import useSlider from '../hooks/useSlider';
 import useResponsive from '../hooks/useResponsive';
 
 import Selector from '../components/Selector';
 import Chart from '../components/Chart';
-import Slider from '../components/Slider';
 
 import '../App.css';
 
-export default function BarChartPage(): JSX.Element {
+export default function LineChartPage(): JSX.Element {
 
 
 	const { dateInputs, handleChangeDate, isErrorDatesPicker } = useDates();
 	const { tickers, suggestions, searchInput, handleChangeSearch, toggleTicker } = useSearchTickers();
-	const { handleSubmit, dataAPI, isError, timeframe } = useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker });
-	const { handleClear, sliderValue, handleSliderChange, styleOutput, nbrValues, handleReset, handlePlaying, isPlaying } = useSlider({ dataAPI });
-	const { dataChartBar, arrayDates } = useGetDataChart({ dataAPI, sliderValue, type: 'bar' });
-	const { sizeCard, widthSlider } = useResponsive();
+	const { handleSubmit, dataAPI, isError } = useGetDataFromApi({ tickers, dateInputs, isErrorDatesPicker });
+	const { dataChartLine, arrayDates } = useGetDataChart({ dataAPI, type: 'line' });
+	const { sizeCard } = useResponsive();
 
 
 	return (
@@ -37,37 +34,23 @@ export default function BarChartPage(): JSX.Element {
 						searchInput={searchInput}
 						handleChangeSearch={handleChangeSearch}
 						suggestions={suggestions}
-						handleClick={() => {handleSubmit();handleClear();}}
+						handleClick={() => {handleSubmit();}}
 					/>
 				</div>
 
 				<div className='wrapper--center'>
-					<h1>Bar Chart</h1>
+					<h1>Line Chart</h1>
 					{
 						arrayDates.length > 0 ? (
-							<>
-								<div className='chart'>
-									<Chart
-										data={dataChartBar}
-										type='bar'
-										title={`Progression in % of an investment made the ${arrayDates[0]}`}
-										yAxisTitle={arrayDates[sliderValue]}
-										sizeCard={sizeCard}
-									/>
-								</div>
-								<Slider
-									widthSlider={widthSlider}
-									nbrValues={nbrValues}
-									sliderValue={sliderValue}
-									handleSliderChange={handleSliderChange}
+							<div className='chart'>
+								<Chart
+									data={dataChartLine}
 									arrayDates={arrayDates}
-									timeframe={timeframe}
-									styleOutput={styleOutput}
-									handleReset={handleReset}
-									handlePlaying={handlePlaying}
-									isPlaying={isPlaying}
+									type='line'
+									title={`Progression in % of an investment made the ${arrayDates[0]}`}
+									sizeCard={sizeCard}
 								/>
-							</>
+							</div>
 						) : (
 							<div style={{margin: 40}}>Choose start date, end date and select up to 5 tickers.</div>
 						)

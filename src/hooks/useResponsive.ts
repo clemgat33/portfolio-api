@@ -4,7 +4,7 @@ import { SizeCard } from '../utils/interfaces';
 
 type TUse = {
   sizeCard: SizeCard;
-  widthSlider: number
+  widthSlider: number;
 }
 
 
@@ -12,8 +12,8 @@ type TUse = {
 export default function useResponsive(): TUse {
 
 	const [sizeCard, setSizeCard] = useState<SizeCard>({
-		widthCard: 500,
-		heightCard: 500
+		width: 500,
+		height: 500
 	});
 	const [widthSlider, setWidthSlider] = useState<number>(500);
 	useEffect(() => {
@@ -28,22 +28,22 @@ export default function useResponsive(): TUse {
 		const spacing: number = 40 + 40;
 		if (width > 768) {
 			setSizeCard({
-				widthCard: 680 - spacing,
-				heightCard: 500 - spacing
+				width: 680 - spacing,
+				height: 500 - spacing
 			});
 			setWidthSlider(680 - spacing);
 		}
 		else if (width > 576) {
 			setSizeCard({
-				widthCard: width - spacing,
-				heightCard: (width / 1.4) - spacing
+				width: width - spacing,
+				height: (width / 1.4) - spacing
 			});
 			setWidthSlider(width - spacing);
 		}
 		else {
 			setSizeCard({
-				widthCard: width - 40,
-				heightCard: width - 40 + 60
+				width: width - 40,
+				height: width - 40 + 60
 			});
 			setWidthSlider(width - 40);
 		}

@@ -1,4 +1,4 @@
-export interface Stock {
+export interface StockSuggestions {
   ticker: string;
   name: string;
   exchange: string;
@@ -6,20 +6,21 @@ export interface Stock {
 
 
 export interface SizeCard {
-  widthCard: number;
-  heightCard: number;
+  width: number;
+  height: number;
 }
 
 
-export interface TStock {
+
+export interface Stock {
   ticker: string;
   dates: DatesData[]
 }
 export interface DatesData {
-  'date': string;
-  'open': number;
-  'close': number;
-  'volume': number;
+  date: string;
+  open: number;
+  close: number;
+  volume: number;
 }
 
 
@@ -35,7 +36,20 @@ export interface PropsFetchStockData {
 }
 
 
-export interface TDataChart {
+export interface DataChartBar {
   name: string;
   y: number
+}
+
+export interface DataChartLine {
+  name: string;
+  data: number[]
+}
+
+
+export interface Split {
+  exDate: string;
+  paymentDate: string;
+  ratio: number;
+  ticker: string;
 }

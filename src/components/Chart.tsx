@@ -2,29 +2,47 @@ import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-import useResponsive from '../hooks/useResponsive';
+
+import { SizeCard, DataChartBar, DataChartLine } from '../utils/interfaces';
 
 type PropsChart = {
-  data: { name: string; y: number; }[];
+  data: DataChartBar[] | DataChartLine[];
+  arrayDates?: string[];
   type: string;
   title: string;
   yAxisTitle?: string;
+  sizeCard: SizeCard;
 }
 
-export default function Chart({ data, type, title, yAxisTitle }: PropsChart): JSX.Element {
 
-	const subtitle = type.slice(0,1).toUpperCase() + type.slice(1, type.length) + ' Chart';
+export default function Chart({ data, arrayDates, type, title, yAxisTitle, sizeCard }: PropsChart): JSX.Element {
 
-	const { sizeCard } = useResponsive();
 
+	const seriesBar = [{
+		name: 'Types',
+		data: data,
+		dataLabels: {
+			enabled: true,
+			color: '#000000',
+			format: '{point.y}',
+			style: {
+				fontSize: '10px',
+				fontFamily: 'Verdana, sans-serif'
+			}
+		},
+		borderWidth: 0.5,
+	}];
+
+	const seriesLine = data;
+	const categoriesLine = arrayDates;
 
 	/*=== OPTIONS ===*/
 	const options = {
 		chart: {
 			type: type,
 			backgroundColor: '#EEEEEE',
-			width: sizeCard.widthCard,
-			height: sizeCard.heightCard,
+			width: sizeCard.width,
+			height: sizeCard.height,
 			borderRadius: 5,
 			spacing: [20, 15, 15, 10],
 		},
@@ -32,16 +50,14 @@ export default function Chart({ data, type, title, yAxisTitle }: PropsChart): JS
 			text: title,
 			style: {
 				color: '#000000',
-			}
-		},
-		subtitle: {
-			text: subtitle,
-			style: {
-				color: '#000000',
+				fontWeight: 'bold',
+				fontSize: '13px',
+				fontFamily: 'Verdana, sans-serif',
 			}
 		},
 		xAxis: {
 			type: 'category',
+			categories: type === 'bar' ? null : categoriesLine,
 			labels: {
 				autoRotation: [-10, -20, -30, -40, -50, -60, -70, -80, -90],
 				style: {
@@ -54,7 +70,7 @@ export default function Chart({ data, type, title, yAxisTitle }: PropsChart): JS
 		plotOptions: {
 			series: {
 				pointPadding: 0,
-				zones: [{
+				zones: type === 'bar' ? [{
 					value: 100,
 					color: '#b60c0c'
 				}, {
@@ -62,6 +78,9 @@ export default function Chart({ data, type, title, yAxisTitle }: PropsChart): JS
 					color: '#3679dd'
 				}, {
 					color: '#1ab60c'
+				}] : [{
+					value: 100,
+					color: '#b60c0c'
 				}]
 			}
 		},
@@ -71,7 +90,7 @@ export default function Chart({ data, type, title, yAxisTitle }: PropsChart): JS
 				style: {
 					color: '#000000',
 					fontWeight: 'bold',
-					fontSize: '14px',
+					fontSize: '13px',
 					fontFamily: 'Verdana, sans-serif',
 				},
 				margin: 20
@@ -90,21 +109,10 @@ export default function Chart({ data, type, title, yAxisTitle }: PropsChart): JS
 			}
 		},
 		legend: {
-			enabled: false
+			enabled: type === 'bar' ? false : true
 		},
-		series: [{
-			data: data,
-			dataLabels: {
-				enabled: true,
-				color: '#000000',
-				format: '{point.y}',
-				style: {
-					fontSize: '10px',
-					fontFamily: 'Verdana, sans-serif'
-				}
-			},
-			borderWidth: 0.5,
-		}],
+		series: type === 'bar' ? seriesBar : seriesLine,
+
 	};
 	/*=== OPTIONS ===*/
 

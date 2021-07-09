@@ -18,16 +18,13 @@ function Header(props: any): JSX.Element {
 
 	const listMenu = (
 		<>
-			<Helmet>
-				<title>{title} | API STOCK</title>
-			</Helmet>
-			<li className={props.location.pathname.includes('/') ? 'active' : ''}>
+			<li className={props.location.pathname === '/' ? 'active' : ''} onClick={toggleMobileMenu}>
 				<Link to='/'>Home</Link>
 			</li>
-			<li className={props.location.pathname.includes('/barchart') ? 'active' : ''}>
+			<li className={props.location.pathname.includes('/barchart') ? 'active' : ''} onClick={toggleMobileMenu}>
 				<Link to='/barchart'>Bar Chart</Link>
 			</li>
-			<li className={props.location.pathname.includes('/linechart') ? 'active' : ''}>
+			<li className={props.location.pathname.includes('/linechart') ? 'active' : ''} onClick={toggleMobileMenu}>
 				<Link to='/linechart'>Line Chart</Link>
 			</li>
 		</>
@@ -35,6 +32,9 @@ function Header(props: any): JSX.Element {
 
 	return (
 		<header>
+			<Helmet>
+				<title>{title} | API STOCK</title>
+			</Helmet>
 			<nav className='navbar'>
 
 				<div className='menu-container' >

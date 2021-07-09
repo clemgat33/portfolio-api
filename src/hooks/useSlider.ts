@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import useInterval from './useInterval';
 
-import { TStock } from '../utils/interfaces';
+import { Stock } from '../utils/interfaces';
 
 type TUse = {
 	sliderValue: number;
@@ -15,7 +15,7 @@ type TUse = {
 	isPlaying: boolean;
 }
 type PropsHook = {
-  dataAPI: TStock[];
+  dataAPI: Stock[];
 };
 
 
