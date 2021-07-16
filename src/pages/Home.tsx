@@ -29,8 +29,8 @@ export default function Home(): JSX.Element {
 				<p>
 					There are 2 charts, created with
 					<a href='https://www.highcharts.com/products/highcharts/' className='link' target='_blank' rel="noreferrer"> Highcharts</a>.<br/>
-					One is an <Link className='link' to='/barchart'> incremental bar chart</Link>, who shows the evolution of an investment made at the start date, in percent, with an incrementation.<br/>
-					The other one is a <Link className='link' to='/linechart'> historical line chart</Link>, who shows the exact same thing but with all the data available at the same time.
+					One is an <Link className='link' to='/barchart'> incremental bar chart</Link>, which shows the evolution of an investment made at the start date, in percent, with an incrementation.<br/>
+					The other one is a <Link className='link' to='/linechart'> historical line chart</Link>, which shows the exact same thing but with all the data available at the same time.
 				</p>
 			</div>
 		</main>
